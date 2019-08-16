@@ -157,3 +157,44 @@ int main()
     return 0;
 } 
 ```
+## #pragma pack(n)
+设定结构体、联合及类成员变量以n字节方式对齐
+```
+#pragma pack(push)  // 保存对齐状态
+#pragma pack(4)     // 设定为 4 字节对齐
+
+struct test
+{
+    char m1;
+    double m4;
+    int m3;
+};
+
+#pragma pack(pop)   // 恢复对齐状态
+```
+## 位域
+类可以将其（非静态）数据成员定义为位域（bit-field），在一个位域中含有一定数量的二进制位。当一个程序需要向其他程序或硬件设备传递二进制数据时，通常会用到位域。
+- 位域在内存中的布局是与机器有关的
+- 位域的类型必须是整型或枚举类型，带符号类型中的位域的行为将因具体实现而定
+- 取地址运算符（&）不能作用于位域，任何指针都无法指向类的位域
+
+## volatile
++ volatile关键字是一种**类型修饰符**，用它声明的类型变量可被某些编译器未知的因素（操作系统、硬件、其他线程etc）更改，使用volatile即告诉编译器不应对这样的对象进行优化。
++ volatile声明的变量，每次访问必须从内存中取值（others可能由于编译器的优化，从CPU寄存器中取值）。
++ const可以是volatile（如只读的状态寄存器）。
++ 指针可以是volatile。
+
+## extern "C"
+- 被`extern "C"`修饰的变量和函数是按照C语言的方式进行编译和连接的，extern "C" 的作用是让 C++ 编译器将 extern "C" 声明的代码当作 C 语言代码处理，可以避免 C++ 因符号修饰导致代码不能和C语言库中的符号进行链接的问题。
+```
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void *memset(void *, int, size_t);
+
+#ifdef __cplusplus
+}
+#endif
+```
+
